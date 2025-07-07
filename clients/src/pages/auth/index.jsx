@@ -1,9 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import background from '../../assets/login2.png'
 import victory from '../../assets/victory.svg'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/tabs";
-
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { toast } from 'sonner';
 const Auth = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('') 
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const validateSignup = () => {
+      if(!email.length){
+        toast.error('Email is required');
+        return false;
+      }
+      if(!password.length){
+        toast.error('Password is required');
+        return false;
+      }
+      if(password !== confirmPassword){
+        toast.error('Passwords do not match');
+        return false;
+      }
+      return true
+  }
+  
+  const handleLogin =async () => {
+    // Handle login logic here
+    console.log('Login with:', email, password);
+  }
+  const handleSignup =async () => {
+    if(validateSignup()){
+      alert('Signup successful');
+      console.log('Signup with:')
+    } 
+  }
   return (
     <div className="h-[100vh] w-[100vw] flex items-center justify-center bg-gray-500">
       <div className="h-[80vh] bg-white border-white text-opacity-90 shadow-2xl w-[80vw] ms:w-[90vh] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2">
@@ -19,7 +50,7 @@ const Auth = () => {
           </div>
 
           <div className="flex items-center justify-center w-full mt-4">
-            <Tabs defaultValue="login" className="w-full">
+            <Tabs defaultValue="login" className="w-3/4">
               <TabsList className="bg-transparent rounded-none w-full">
                 <TabsTrigger
                   value="login"
@@ -29,18 +60,29 @@ const Auth = () => {
                 </TabsTrigger>
                 <TabsTrigger
                   value="signup"
-                  className="text-black text-opacity-90 border-b-2 rounded-none w-full data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all duration-300"
+                  className="data-[state=active]:bg-transparent text-black text-opacity-90 border-b-2 rounded-none w-full data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all duration-300"
                 >
                   Sign up
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="login" className="mt-4">
-                {/* ✅ Login form goes here */}
+                <form className="flex flex-col gap-4">
+                  <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full"/>
+                  <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full"/>
+                  <Button className='rounded-full p-6' onClick={handleLogin}>Login</Button>
+                </form>
               </TabsContent>
 
               <TabsContent value="signup" className="mt-4">
-                {/* ✅ Signup form goes here */}
+                <form className="flex flex-col gap-1">
+                  <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full"/>
+                  <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full"/>
+                  <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full"/>
+                  
+                  <Button className='rounded-full p-6 bg-blue-800 text-white' onClick={handleSignup} >SignUp</Button>
+                    
+                </form>
               </TabsContent>
             </Tabs>
           </div>

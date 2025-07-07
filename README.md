@@ -27,3 +27,18 @@ npx shadcn@latest add button
 npx shadcn-ui@latest add tabs
 npx shadcn@latest add tabs
 npx shadcn@latest add tabs
+npx shadcn@latest add input
+
+
+
+
+
+backend
+cd server
+npm init -y
+
+npm install express dotenv cors cookie-parser mongoose bcrypt jsonwebtoken
+npm i nodemon --save-dev
+
+
+npx shadcn@latest add sonner

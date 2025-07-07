@@ -11,7 +11,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["clients/src/src/*"]
+      "@/*": ["clients/src/*"]
     }
   }
 }
