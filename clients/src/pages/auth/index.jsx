@@ -5,6 +5,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/ta
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { toast } from 'sonner';
+import apiClient from '../../utils/apiClient';
+import { SIGNUP_ROUTE } from '../../utils/constants';
 const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('') 
@@ -31,9 +33,13 @@ const Auth = () => {
   }
   const handleSignup =async () => {
     if(validateSignup()){
-      alert('Signup successful');
-      console.log('Signup with:')
-    } 
+      const response= await apiClient.post(SIGNUP_ROUTE, {
+        email,      
+        password, 
+
+    });
+    console.log(response);
+    }
   }
   return (
     <div className="h-[100vh] w-[100vw] flex items-center justify-center bg-gray-500">
