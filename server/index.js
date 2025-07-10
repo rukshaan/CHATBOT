@@ -11,7 +11,8 @@ const Port=process.env.PORT || 3001;
 const databaseUrl = process.env.DATABASE_URL || 'mongodb://localhost:27017/chat-app';
 
 app.use(cors({
-    origin: [process.env.ORIGIN ], // Adjust the origin as needed
+    origin: 'http://localhost:5173',
+    // origin: [process.env.ORIGIN ], // Adjust the origin as needed
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     methods : ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
 }));

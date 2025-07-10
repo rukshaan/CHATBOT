@@ -14,7 +14,15 @@ export const signup=async(request,response,next) => {
         if(!email || !password){
             return response.status(400).json({message:"Email and password are required"});
         }
+        // ✅ Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return response.status(409).json({ message: "User already exists" });
+        }
+
         const user=await User.create({email,password})
+        const isProduction = process.env.NODE_ENV === 'production';
+
         response.cookie('jwt',createToken(email,user.id),{
             secure:true,
             maxAge,
