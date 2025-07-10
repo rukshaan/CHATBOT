@@ -3,10 +3,12 @@ import background from '../../assets/login2.png'
 import victory from '../../assets/victory.svg'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/tabs";
 import { Input } from "../../components/ui/input";
+
 import { Button } from "../../components/ui/button";
 import { toast } from 'sonner';
-import apiClient from '../../utils/apiClient';
-import { SIGNUP_ROUTE } from '../../utils/constants';
+
+import apiClient from '../../lib/utils/apiClient';
+import { SIGNUP_ROUTE } from '../../lib/utils/constants.js';
 const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('') 
@@ -76,7 +78,7 @@ const Auth = () => {
                 <form className="flex flex-col gap-4">
                   <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full"/>
                   <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full"/>
-                  <Button className='rounded-full p-6' onClick={handleLogin}>Login</Button>
+                  <Button className='rounded-full p-6' onClick={(e) => {e.preventDefault(); handleLogin()}}>Login</Button>
                 </form>
               </TabsContent>
 
@@ -86,7 +88,7 @@ const Auth = () => {
                   <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full"/>
                   <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full"/>
                   
-                  <Button className='rounded-full p-6 bg-blue-800 text-white' onClick={handleSignup} >SignUp</Button>
+                  <Button className='rounded-full p-6 bg-blue-800 text-black' onClick={(e) => {e.preventDefault(); handleSignup()}} >SignUp</Button>
                     
                 </form>
               </TabsContent>
