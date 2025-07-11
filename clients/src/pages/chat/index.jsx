@@ -1,12 +1,20 @@
 import React from 'react'
+import { useAppStore } from '../../store'
+import {useNavigate} from 'react-router-dom'
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+
 const Chat = () => {
+  const { userInfo } = useAppStore();
+  const navigate = useNavigate();
+  useEffect(() => {
+    toast('Please complete your profile setup before accessing the chat.');
+    if (!userInfo.profileSetup) {
+      navigate('/profile');
+    }
+  }, [userInfo, navigate]);
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-500">
-      <h1 className="text-4xl font-bold text-blue-600">Hello, Tailwind CSS!</h1>
-      <button className="px-4 py-2 mt-4 text-red bg-blue-500 rounded hover:bg-blue-600">
-        Click Me
-      </button>
-    </div>
+    <div>Chat Page</div>
   )
 }
 export default Chat

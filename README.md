@@ -42,3 +42,6 @@ npm i nodemon --save-dev
 
 
 npx shadcn@latest add sonner
+
+
+npx shadcn@latest add avatar

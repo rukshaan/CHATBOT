@@ -3,16 +3,35 @@ import background from '../../assets/login2.png'
 import victory from '../../assets/victory.svg'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/tabs";
 import { Input } from "../../components/ui/input";
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from "../../components/ui/button";
 import { toast } from 'sonner';
 
 import apiClient from '../../lib/utils/apiClient';
-import { SIGNUP_ROUTE } from '../../lib/utils/constants.js';
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from '../../lib/utils/constants.js';
+import { useAppStore } from '../../store/index.js';
+
 const Auth = () => {
+  const{setUserInfo}=useAppStore()
+  const navigate=useNavigate()
+  //  State variables for email, password, and confirm password
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('') 
   const [confirmPassword, setConfirmPassword] = useState('')
+
+  const validateLogin = () => {
+      if(!email.length){
+        toast.error('Email is required');
+        return false;
+      }
+      if(!password.length){
+        toast.error('Password is required');
+        return false;
+      }
+      
+      return true
+  }
   const validateSignup = () => {
       if(!email.length){
         toast.error('Email is required');
@@ -30,19 +49,38 @@ const Auth = () => {
   }
   
   const handleLogin =async () => {
+      if(validateLogin()){
+        const response= await apiClient.post(LOGIN_ROUTE, {
+          email,      
+          password, 
+      },{withCredentials:true}
+      );
+      if(response.data.user.id){
+        setUserInfo(response.data.user)
+
+      if(response.data.user.profileSetup) navigate('/chat'); else navigate('/profile');
+        console.log(response);  
+    }
     // Handle login logic here
     console.log('Login with:', email, password);
+    }
   }
   const handleSignup =async () => {
     if(validateSignup()){
       const response= await apiClient.post(SIGNUP_ROUTE, {
         email,      
         password, 
-
-    });
-    console.log(response);
+    },{withCredentials:true}
+  );
+  if(response.status === 201){
+        toast.success('Login successful');
+        setUserInfo(response.data.user);
+        navigate('/profile');
+      }
+  
+    
     }
-  }
+  };
   return (
     <div className="h-[100vh] w-[100vw] flex items-center justify-center bg-gray-500">
       <div className="h-[80vh] bg-white border-white text-opacity-90 shadow-2xl w-[80vw] ms:w-[90vh] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2">
