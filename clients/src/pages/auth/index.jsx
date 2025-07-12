@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/ta
 import { Input } from "../../components/ui/input";
 import { useNavigate } from 'react-router-dom';
 
-import { Button } from "../../components/ui/button";
+// import { Button } from "../../components/ui/button";
 import { toast } from 'sonner';
 
 import apiClient from '../../lib/utils/apiClient';
@@ -116,7 +116,7 @@ const Auth = () => {
                 <form className="flex flex-col gap-4">
                   <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full"/>
                   <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full"/>
-                  <Button className='rounded-full p-6' onClick={(e) => {e.preventDefault(); handleLogin()}}>Login</Button>
+                  <button className='rounded-full p-6' onClick={(e) => {e.preventDefault(); handleLogin()}}>Login</button>
                 </form>
               </TabsContent>
 
@@ -126,7 +126,7 @@ const Auth = () => {
                   <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full"/>
                   <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full"/>
                   
-                  <Button className='rounded-full p-6 bg-blue-800 text-black' onClick={(e) => {e.preventDefault(); handleSignup()}} >SignUp</Button>
+                  <button className='rounded-full p-6 bg-blue-800 text-black' onClick={(e) => {e.preventDefault(); handleSignup()}} >SignUp</button>
                     
                 </form>
               </TabsContent>

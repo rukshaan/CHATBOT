@@ -37,7 +37,7 @@ const App = () => {
     }
   }, [userInfo, setUserInfo]);
 
-  // ✅ Protect routes based on auth state
+  //  Protect routes based on auth state
   const PrivateRoute = ({ children }) => {
     return userInfo ? children : <Navigate to="/auth" />;
   };
