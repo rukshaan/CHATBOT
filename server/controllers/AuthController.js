@@ -1,6 +1,9 @@
 import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 import { compare } from 'bcrypt';
+import { renameSync, unlinkSync, existsSync, mkdirSync } from 'fs'; // ✅ add this
+
+
 const maxAge=3*24*60*60*1000; // 24 hours in milliseconds
 const createToken=(email,userId) =>{
     return jwt.sign({email,userId},process.env.JWT_SECRET,{
@@ -102,7 +105,7 @@ export const getUserInfo =async(request,response,next) => {
                 lastName:userData.lastName,
                 image:userData.image,
                 color:userData.color,
-                profileSetup:userData.profileSetup.userId
+                profileSetup:userData.profileSetup
             
         })
 
@@ -112,3 +115,117 @@ export const getUserInfo =async(request,response,next) => {
         response.status(500).json({message:"Internal server error"});
     }
 }
+export const updateProfile = async (request, response, next) => {
+    try{
+        
+        const {userId} =request;
+        const { firstName, lastName, image, color } = request.body;
+        console.log('image data',request.body);
+        if (!firstName || !lastName ) {
+            return response.status(400).json({ message: "First name, last name and color are required" });
+        }
+        const userData = await User.findByIdAndUpdate(userId, {
+            firstName,
+            lastName,
+            image,
+            color,
+            profileSetup: true
+        }, { new: true,runValidators: true });  
+        return response.status(200).json({
+                id:userData.id,
+                email:userData.email,
+                firstName:userData.firstName,
+                lastName:userData.lastName,
+                image:userData.image,
+                color:userData.color,
+                profileSetup:userData.profileSetup.userId
+            
+        })
+
+    }
+    catch(error){
+        console.error("Error in signup:", error);
+        response.status(500).json({message:"Internal server error"});
+    }
+
+}
+export const addProfileImage = async (request, response) => {
+  try {
+    console.log("file is",request.file);
+    // if (!request.file) {
+    //   return response.status(400).json({ message: "Image is required" });
+    // }
+
+    const uploadDir = 'uploads/profiles';
+    if (!existsSync(uploadDir)) {
+    mkdirSync(uploadDir, { recursive: true });
+    }
+    const timestamp = Date.now();
+    const sanitizedFilename = request.file.originalname.replace(/\s+/g, '_');
+    const fileName = `${uploadDir}/${timestamp}-${sanitizedFilename}`;
+
+
+    
+    renameSync(request.file.path, fileName);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      request.userId,
+      { image: fileName },
+      { new: true, runValidators: true }
+    );
+
+    return response.status(200).json({
+      image: updatedUser.image,
+    });
+
+  } catch (error) {
+    console.error("Error in addProfileImage:", error);
+    response.status(500).json({ message: "Internal server error" });
+  }
+};
+// export const removeProfileImage = async (request, response, next) => {
+//     try{
+//         console.log(request.userId);
+//         const {userId} =request;
+//         const user= await User.findById(userId);
+//         if(!user){
+//             return response.status(404).send({message:"User not found"});
+//         }
+//         if(user.image){
+//             unlinkSync(user.image);
+//         }
+//         user.image=null;
+//         await user.save();
+         
+//         return response.status(200).json({ message: "Profile image removed successfully" });
+
+
+//     }
+//     catch(error){
+//         console.error("Error in signup:", error);
+//         response.status(500).json({message:"Internal server error"});
+//     }
+// }
+
+
+export const removeProfileImage = async (req, res) => {
+    
+    console.log('request is ',req.userId);
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.image) {
+      unlinkSync(user.image); // delete from filesystem
+      user.image = null;
+      await user.save();
+    }
+
+    return res.status(200).json({ message: "Profile image removed successfully" });
+  } catch (error) {
+    console.error("Error in removeProfileImage:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
