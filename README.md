@@ -45,3 +45,4 @@ npx shadcn@latest add sonner
 
 
 npx shadcn@latest add avatar
+npm install react-lottie
