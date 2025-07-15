@@ -2,8 +2,8 @@ import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { renameSync, unlinkSync, existsSync, mkdirSync } from 'fs'; // ✅ add this
-
-
+import path from 'path';
+import fs from 'fs';
 const maxAge=3*24*60*60*1000; // 24 hours in milliseconds
 const createToken=(email,userId) =>{
     return jwt.sign({email,userId},process.env.JWT_SECRET,{
@@ -74,7 +74,7 @@ export const login=async(request,response,next) => {
         return response.status(200).json({user:{
             id:user.id,
             email:user.email,
-            firtName:user.firstName,
+            firstName:user.firstName,
             lastName:user.lastName,
             image:user.image,
             color:user.color,
@@ -124,10 +124,17 @@ export const updateProfile = async (request, response, next) => {
         if (!firstName || !lastName ) {
             return response.status(400).json({ message: "First name, last name and color are required" });
         }
+
+        let sanitizedImage = image;
+        if (image?.startsWith('http')) {
+        const url = new URL(image);
+        sanitizedImage = url.pathname.replace(/^\/+/, ''); // remove leading slashes
+        }
+        
         const userData = await User.findByIdAndUpdate(userId, {
             firstName,
             lastName,
-            image,
+            image:sanitizedImage,
             color,
             profileSetup: true
         }, { new: true,runValidators: true });  
@@ -207,18 +214,25 @@ export const addProfileImage = async (request, response) => {
 //     }
 // }
 
+import { fileURLToPath } from 'url';
+
 
 export const removeProfileImage = async (req, res) => {
-    
-    console.log('request is ',req.userId);
   try {
     const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     if (user.image) {
-      unlinkSync(user.image); // delete from filesystem
+    //   const imagePath = path.join(process.cwd(), 'server', user.image); // absolute path to image
+        const imagePath = path.join(__dirname, '..', user.image); // assuming controller is inside server/controllers/
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath); // safely delete
+      }
+
       user.image = null;
       await user.save();
     }
