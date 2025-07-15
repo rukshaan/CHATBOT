@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 const Chat = () => {
-  const { userInfo } = useAppStore();
-  const navigate = useNavigate();
-  useEffect(() => {
-    toast('Please complete your profile setup before accessing the chat.');
-    if (!userInfo.profileSetup) {
-      navigate('/profile');
-    }
-  }, [userInfo, navigate]);
+  // const { userInfo } = useAppStore();
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   toast('Please complete your profile setup before accessing the chat.');
+  //   if (!userInfo.profileSetup) {
+  //     navigate('/profile');
+  //   }
+  // }, [userInfo, navigate]);
   return (
     <div>Chat Page</div>
   )
