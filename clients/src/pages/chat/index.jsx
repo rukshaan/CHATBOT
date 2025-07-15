@@ -16,6 +16,8 @@ const Chat = () => {
   return (<>
     <div>Chat Page</div>
     <div>Chat page</div>
+    <div>Chat Page</div>
+    <div>Chat page</div>
     </>
   )
 }
