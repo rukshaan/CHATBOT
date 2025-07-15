@@ -13,8 +13,10 @@ const Chat = () => {
   //     navigate('/profile');
   //   }
   // }, [userInfo, navigate]);
-  return (
+  return (<>
     <div>Chat Page</div>
+    <div>Chat page</div>
+    </>
   )
 }
 export default Chat
