@@ -5,3 +5,7 @@
 @tailwind utilities;
 @custom-variant dark (&:is(.dark *));
 /* @custom-variant light (&:is(.light *)); */
+
+/* body{
+    background-color: rgb(130, 221, 130);
+} */

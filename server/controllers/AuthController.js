@@ -152,9 +152,9 @@ export const updateProfile = async (request, response, next) => {
 export const addProfileImage = async (request, response) => {
   try {
     console.log("file is",request.file);
-    // if (!request.file) {
-    //   return response.status(400).json({ message: "Image is required" });
-    // }
+    if (!request.file) {
+      return response.status(400).json({ message: "Image is required" });
+    }
 
     const uploadDir = 'uploads/profiles';
     if (!existsSync(uploadDir)) {
@@ -180,7 +180,7 @@ export const addProfileImage = async (request, response) => {
 
   } catch (error) {
     console.error("Error in addProfileImage:", error);
-    response.status(500).json({ message: "Internal server error" });
+    response.status(500).json({ message: "Internal server error:::::::::::::::::" });
   }
 };
 // export const removeProfileImage = async (request, response, next) => {

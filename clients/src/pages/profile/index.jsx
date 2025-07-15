@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import { REMOVE_IMAGE_PROFILE_ROUTE, UPDATE_PROFILE_ROUTE } from "../../lib/utils/constants.js";
 import { ADD_IMAGE_PROFILE_ROUTE } from "../../lib/utils/constants.js";
 import { HOST } from "../../lib/utils/constants.js";
-
-
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input.jsx";
 const Profile = () => {
   const navigate = useNavigate();
   const { userInfo, setUserInfo } = useAppStore();
@@ -31,7 +31,7 @@ const Profile = () => {
       setImage(userInfo.image ? `${HOST}/${userInfo.image}` : "");
     }
     
-  }, [userInfo,image]);
+  }, [userInfo]);
 
   const validateProfile = () => {
     if (!firstName.length) {
@@ -121,7 +121,7 @@ const handleDeleteImage = async (e) => {
   }
 }
   return (
-    <div className="bg-[#2222be24] h-[100vh] flex items-center justify-center flex-col gap-10">
+    <div className="h-[100vh] w-[100vw] flex items-center justify-center bg-gray-500">
       <div className="flex flex-col gap-10 w-full md:w-[40vw]">
         <IoArrowBack
           className="text-4xl lg:text-6xl text-white/90 cursor-pointer"
@@ -164,17 +164,17 @@ const handleDeleteImage = async (e) => {
                 )}
               </div>
             )}
-            <input type='file' ref={fileInputRef} className="hidden" onChange={handleImageChange} name='profile-image' accept=".png , .jpg , .jpeg , .svg , .webp"/>
+            <Input type='file' ref={fileInputRef} className="hidden" onChange={handleImageChange} name='profile-image' accept=".png , .jpg , .jpeg , .svg , .webp"/>
           </div>
           <div className='flex min-w-32 md:min-w-64 flex-col gap-5 text-white item-center justify-center'>
             <div className="w-full">
-              <input placeholder="Email"disabled type='email'value={userInfo.email}  className="rounded-lg p-6 bg-[#2c2e3b] border-none" />
+              <Input placeholder="Email"disabled type='email'value={userInfo.email}  className="rounded-lg p-6 bg-[#2c2e3b] border-none" />
             </div>
             <div className="w-full">
-              <input placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} type='text' value={firstName}  className="rounded-lg p-6 bg-[#2c2e3b] border-none" />
+              <Input placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} type='text' value={firstName}  className="rounded-lg p-6 bg-[#2c2e3b] border-none" />
             </div>
             <div className="w-full">
-              <input placeholder="last Name" onChange={(e) => setLastName(e.target.value)} type='text' value={lastName}  className="rounded-lg p-6 bg-[#2c2e3b] border-none" />
+              <Input placeholder="last Name" onChange={(e) => setLastName(e.target.value)} type='text' value={lastName}  className="rounded-lg p-6 bg-[#2c2e3b] border-none" />
             </div>
             <div className='w-full flex gap-5'>
               {
@@ -191,7 +191,7 @@ const handleDeleteImage = async (e) => {
           </div>
         </div>
         <div className='w-full'>
-          <button className='h-14 w-100 flex items-center justify-center text-white bg-purple-700 hover:bg-purple-600 transition-all duration-300' onClick={saveChanges}>Save Changes</button>
+          <Button className='h-14 w-100 flex items-center justify-center text-white bg-purple-700 hover:bg-purple-600 transition-all duration-300' onClick={saveChanges}>Save Changes</Button>
         </div>
       </div>
     </div>
