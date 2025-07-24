@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {GrAttachment} from 'react-icons/gr'
 import { icons } from 'lucide-react'
@@ -12,7 +12,7 @@ const MessageBar = () => {
     const [emojiPickerOpen,setEmojiPickerOpen]=useState(false)
     const handleAddEmoji = (emoji) =>{
         setMessage((msg)=>msg+emoji.emoji);
-        setEmojiPickerOpen(false); // auto-close after selecting
+        // setEmojiPickerOpen(false); // auto-close after selecting
     }
     const handleSendMessage= async ()=>{
         // setMessage((msg)=>msg+emoji.emoji);
@@ -21,6 +21,18 @@ const MessageBar = () => {
         setMessage("");
     }
     const emojiRef=useRef()
+    useEffect(() => {
+        function handleClickOutside(event) {
+          if (emojiRef.current && !emojiRef.current.contains(event.target)) {
+            setEmojiPickerOpen(false);
+          }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+    },[emojiRef]);
+
   return (
     <div className='h-[10vh] bg-[#1c1d25] flex justify-center items-center px-8 mb-6 gap-6'>
         <div className="flex-1 flex bg-[#32a2b3] rounded-md items-center gap-5 pr-5">
@@ -36,15 +48,16 @@ const MessageBar = () => {
                 <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all" onClick={()=>{setEmojiPickerOpen(true)}}>
                     <RiEmojiStickerLine className='text-2xl'/>
                 </button>
-                {emojiPickerOpen && (
-                <div className="absolute bottom-16 right-0 z-50">
+
+                <div className="absolute bottom-16 right-0 z-50" ref={emojiRef}>
                     <EmojiPicker
                     theme="dark"
                     onEmojiClick={handleAddEmoji}
                     autoFocusSearch={false}
+                    open = {emojiPickerOpen}
                     />
                 </div>
-)}
+
             </div>
         </div>
         <button className="bg-[#8417ff]rounded-md flex items-center justify-center p-5 hover:bg-[#741bda] focus:hover:bg-[#741bda] focus:border-none focus:outline-none focus:text-white duration-300 transition-all">
