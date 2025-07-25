@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/AuthRoutes.js';
 import path from 'path';
+import contactRoutes from './routes/ContactRoutes.js';
 dotenv.config();
 const app=express();
 const Port=process.env.PORT || 3001;
@@ -22,6 +23,7 @@ const server=app.listen(Port,()=>{
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api/auth',authRoutes)
+app.use("/api/contacts", contactRoutes);
 app.use('/uploads/profiles', express.static(path.resolve('uploads/profiles')));
 
 

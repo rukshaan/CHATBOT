@@ -8,6 +8,8 @@ export const LOGOUT_ROUTE=`${AUTH_ROUTES}/logout`;
 export const USER_PROFILE_ROUTE=`${AUTH_ROUTES}/user-profile`;
 export const GET_USER_INFO=`${AUTH_ROUTES}/userInfo`;
 export const UPDATE_PROFILE_ROUTE =`${AUTH_ROUTES}/update-profile`;
-
 export const ADD_IMAGE_PROFILE_ROUTE =`${AUTH_ROUTES}/add-profile-image`;
 export const REMOVE_IMAGE_PROFILE_ROUTE =`${AUTH_ROUTES}/remove-profile-image`;
+
+export const CONTACTS_ROUTES='/api/contacts';
+export const SEARCH_CONTACTS_ROUTE=`${CONTACTS_ROUTES}/search`;
