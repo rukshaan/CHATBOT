@@ -23,6 +23,11 @@ import { ScrollArea } from "../../../../../../components/ui/scroll-area";
 // import apiClient from "../../../../../../lib/utils"; // Ensure correct import
 import apiClient from "../../../../../../lib/utils/apiClient"; // ⬅️ Direct file path
 
+
+const selectNewContact = (contact) => {
+    setOpenNewContactModel(false);
+    setSearchedContacts([]);
+}
 const NewDm = () => {
   const [openNewContactModel, setOpenNewContactModel] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
@@ -81,7 +86,7 @@ const NewDm = () => {
           <ScrollArea className="h-[250px] mt-5">
             <div className="flex flex-col gap-5">
               {searchedContacts.map((contact) => (
-                <div key={contact._id} className="flex gap-3 items-center cursor-pointer">
+                <div onClick={()=>selectNewContact(contact)} key={contact._id} className="flex gap-3 items-center cursor-pointer">
                   <div className="w-12 h-12 relative">
                     <Avatar className="h-12 w-12 rounded-full overflow-hidden">
                       {contact.image ? (
