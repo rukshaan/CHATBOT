@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signup,login,getUserInfo,updateProfile,addProfileImage,removeProfileImage } from "../controllers/AuthController.js";
+import { signup,login,getUserInfo,updateProfile,addProfileImage,removeProfileImage,logout } from "../controllers/AuthController.js";
 // import { authenticate } from "../middlewares/AuthMiddlewares.js";
 import { requireAuth } from "../middlewares/AuthMiddlewares.js";
 import multer from "multer";
@@ -21,4 +21,5 @@ authRoutes.get("/userInfo",requireAuth,getUserInfo);
 authRoutes.post("/update-profile",requireAuth,updateProfile);
 authRoutes.post('/add-profile-image', upload.single('profile-image'), requireAuth, addProfileImage);
 authRoutes.delete("/remove-profile-image",requireAuth,removeProfileImage);
+authRoutes.post("/logout",requireAuth,logout);
 export default authRoutes;

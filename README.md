@@ -28,7 +28,8 @@ npx shadcn-ui@latest add tabs
 npx shadcn@latest add tabs
 npx shadcn@latest add tabs
 npx shadcn@latest add input
-
+npx shadcn@latest add tooltip 
+npx shadcn@latest add dialog
 
 
 
@@ -46,3 +47,4 @@ npx shadcn@latest add sonner
 
 npx shadcn@latest add avatar
 npm install react-lottie
+  
