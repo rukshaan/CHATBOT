@@ -20,17 +20,23 @@ import animationData from '../../../../../../assets/lottie-json.json';
 import { SEARCH_CONTACTS_ROUTE } from '../../../../../../lib/utils/constants';
 import { Avatar, AvatarImage } from "../../../../../../components/ui/avatar.jsx";
 import { ScrollArea } from "../../../../../../components/ui/scroll-area";
-// import apiClient from "../../../../../../lib/utils"; // Ensure correct import
-import apiClient from "../../../../../../lib/utils/apiClient"; // ⬅️ Direct file path
+import apiClient from "../../../../../../lib/utils/apiClient";
+import { useAppStore } from '../../../../../../store';
 
-
-const selectNewContact = (contact) => {
-    setOpenNewContactModel(false);
-    setSearchedContacts([]);
-}
 const NewDm = () => {
   const [openNewContactModel, setOpenNewContactModel] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
+
+  // ✅ Use the Zustand store for setting chat state
+  const setSelectedChatType = useAppStore((state) => state.setSelectedChatType);
+  const setSelectedChatData = useAppStore((state) => state.setSelectedChatData);
+  
+  const selectNewContact = (contact) => {
+    setOpenNewContactModel(false);
+    setSelectedChatType("contact");
+    setSelectedChatData(contact);
+    setSearchedContacts([]);
+  };
 
   const searchContacts = async (searchTerm) => {
     try {
@@ -62,18 +68,16 @@ const NewDm = () => {
               onClick={() => setOpenNewContactModel(true)}
             />
           </TooltipTrigger>
-          <TooltipContent className="bg-[#1c1d25] border-none mb-2 p- text-white">
+          <TooltipContent className="bg-[#1c1d25] border-none mb-2 text-white">
             Select New Contact
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
       <Dialog open={openNewContactModel} onOpenChange={setOpenNewContactModel}>
-        <DialogContent className="bg-[#181920] border-none  text-white w-[400px] h-[400px] flex flex-col">
+        <DialogContent className="bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col">
           <DialogHeader>
-            <DialogTitle className="text-white">
-              Please select a Contact
-            </DialogTitle>
+            <DialogTitle className="text-white">Please select a Contact</DialogTitle>
             <DialogDescription className="text-white"></DialogDescription>
           </DialogHeader>
 
@@ -86,7 +90,7 @@ const NewDm = () => {
           <ScrollArea className="h-[250px] mt-5">
             <div className="flex flex-col gap-5">
               {searchedContacts.map((contact) => (
-                <div onClick={()=>selectNewContact(contact)} key={contact._id} className="flex gap-3 items-center cursor-pointer">
+                <div onClick={() => selectNewContact(contact)} key={contact._id} className="flex gap-3 items-center cursor-pointer">
                   <div className="w-12 h-12 relative">
                     <Avatar className="h-12 w-12 rounded-full overflow-hidden">
                       {contact.image ? (
@@ -113,7 +117,7 @@ const NewDm = () => {
             </div>
           </ScrollArea>
 
-          {searchedContacts.length <= 0 && (
+          {searchedContacts.length === 0 && (
             <div className="flex-1 md:bg-[#1c1d25] md:flex mt-5 flex-col justify-center items-center duration-1000 transition-all">
               <Lottie
                 isClickToPauseDisabled={true}
@@ -122,9 +126,8 @@ const NewDm = () => {
                 options={getAnimationOptions(animationData)}
               />
               <div className="text-opacity-80 text-white flex flex-col gap-5 items-center mt-10 lg:text-2xl text-2xl transition-all duration-300 text-center">
-                <h3 className="poppins-medium ">
-                  Hi <span className="text-purple-500">!</span>Search New <span className="text-purple-500">Contact</span>
-                  <span className="text-purple-500">.</span>
+                <h3 className="poppins-medium">
+                  Hi <span className="text-purple-500">!</span> Search New <span className="text-purple-500">Contact</span><span className="text-purple-500">.</span>
                 </h3>
               </div>
             </div>
